@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@octokit/rest": "^20.0.2",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "oauth-1.0a": "^2.2.6"
