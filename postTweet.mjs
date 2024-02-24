@@ -30,7 +30,7 @@ console.log(process.env.TWITTER_ACCESS_TOKEN_SECRET);
 
 
 const data = {
-    text: 'Hello, world! This is a tweet posted from Node.js',
+    text: 'Hello, world! This is a tweet posted from Github Action!',
 };
 
 let authorization = oauth.toHeader(oauth.authorize({
