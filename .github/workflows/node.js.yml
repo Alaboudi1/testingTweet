@@ -1,10 +1,11 @@
 name: Posting a tweet
 on:
-  push:
+  pull_request_target:
     branches: [ "main" ]
 
 jobs:
   tweet:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -23,5 +24,7 @@ jobs:
         TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
         TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
         MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
 
 

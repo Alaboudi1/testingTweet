@@ -21,7 +21,7 @@ async function getPRFiles(owner, repo, pull_number) {
 }
 
 // Assumes you have GITHUB_REPOSITORY and GITHUB_TOKEN set in your environment variables
-const [owner, repo] = "Alaboudi1/testingTweet".split('/');
+const [owner, repo] = (process.env.GITHUB_REPOSITORY || '').split('/');
 const pullNumber = parseInt(process.env.PULL_REQUEST_NUMBER, 10);
 
 if (!owner || !repo || isNaN(pullNumber)) {
