@@ -1,0 +1,17 @@
+{
+  "name": "testingtweet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "postTweets.js",
+  "scripts": {
+    "postTweetCI": "node postTweets.js",
+    "postTweet": "node --env-file=.env postTweets.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "oauth-1.0a": "^2.2.6"
+  }
+}
