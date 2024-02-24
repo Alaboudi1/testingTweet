@@ -4,7 +4,7 @@
   "description": "",
   "main": "postTweets.js",
   "scripts": {
-    "postTweetCI": "node postTweets.mjs"
+    "postTweetCI": "node postTweet.mjs"
   },
   "keywords": [],
   "author": "",
