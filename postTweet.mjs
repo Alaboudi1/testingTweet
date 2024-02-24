@@ -1,5 +1,9 @@
-const OAuth = require('oauth-1.0a');
-const crypto = require('crypto');
+import OAuth from 'oauth-1.0a';
+import { createHmac } from 'crypto';
+import * as ev from 'dotenv';
+
+ev.config();
+
 const myHeaders = new Headers();
 const oauth = OAuth({
     consumer: {
@@ -8,7 +12,7 @@ const oauth = OAuth({
     },
     signature_method: 'HMAC-SHA1',
     hash_function(base_string, key) {
-        return crypto.createHmac('sha1', key).update(base_string).digest('base64');
+        return createHmac('sha1', key).update(base_string).digest('base64');
     },
 });
 
@@ -29,7 +33,6 @@ const data = {
     text: 'Hello, world! This is a tweet posted from Node.js!!',
 };
 
-// Generate the authorization header
 let authorization = oauth.toHeader(oauth.authorize({
     url,
     method: 'POST',
