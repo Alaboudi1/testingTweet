@@ -1,8 +1,8 @@
 import OAuth from 'oauth-1.0a';
 import { createHmac } from 'crypto';
-import * as ev from 'dotenv';
+import * as env from 'dotenv';
 
-ev.config();
+env.config();
 
 const myHeaders = new Headers();
 const oauth = OAuth({
@@ -22,18 +22,13 @@ const token = {
 };
 
 const url = 'https://api.twitter.com/2/tweets';
-console.log(url);
-console.log(process.env.TWITTER_API_KEY);
-console.log(process.env.TWITTER_API_SECRET);
-console.log(process.env.TWITTER_ACCESS_TOKEN);
-console.log(process.env.TWITTER_ACCESS_TOKEN_SECRET);
 
 
 const data = {
     text: 'Hello, world! This is a tweet posted from Github Action!',
 };
 
-let authorization = oauth.toHeader(oauth.authorize({
+const authorization = oauth.toHeader(oauth.authorize({
     url,
     method: 'POST',
 }, token));
@@ -43,8 +38,6 @@ myHeaders.append('Authorization', authorization.Authorization);
 myHeaders.append('Content-Type', 'application/json');
 
 
-
-// Post the tweet
 fetch(url, {
     method: 'POST',
     headers: myHeaders,
