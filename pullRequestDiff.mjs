@@ -1,7 +1,7 @@
 import { Octokit } from "@octokit/rest";
 
 // Instantiate octokit with a personal access token
-const octokit = new Octokit({ auth: process.env.My_GITHUB_TOKEN });
+const octokit = new Octokit({ auth: process.env.MY_GITHUB_TOKEN });
 
 async function getPRFiles(owner, repo, pull_number) {
     try {
