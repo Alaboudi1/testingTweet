@@ -4,7 +4,7 @@
   "description": "",
   "main": "postTweets.js",
   "scripts": {
-    "postTweetCI": "node pullRequestTweet.mjs"
+    "postTweetCI": "node pullRequestDiff.mjs"
   },
   "keywords": [],
   "author": "",
