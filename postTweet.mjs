@@ -22,7 +22,7 @@ const token = {
 };
 
 const url = 'https://api.twitter.com/2/tweets';
-
+console.log(url);
 console.log(process.env.TWITTER_API_KEY);
 console.log(process.env.TWITTER_API_SECRET);
 console.log(process.env.TWITTER_ACCESS_TOKEN);
@@ -30,7 +30,7 @@ console.log(process.env.TWITTER_ACCESS_TOKEN_SECRET);
 
 
 const data = {
-    text: 'Hello, world! This is a tweet posted from Node.js!!',
+    text: 'Hello, world! This is a tweet posted from Node.js',
 };
 
 let authorization = oauth.toHeader(oauth.authorize({
