@@ -20,7 +20,10 @@ async function getPRFiles(owner, repo, pull_number) {
         } else {
             console.log('devs.json was not modified with additions');
         }
-
+}
+    catch (error) {
+        console.error('Error getting pull request files: ', error);
+    }
 }
 
 // Assumes you have GITHUB_REPOSITORY and GITHUB_TOKEN set in your environment variables
