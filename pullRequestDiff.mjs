@@ -1,13 +1,18 @@
 import { Octokit } from "@octokit/rest";
 import * as env from 'dotenv';
-import devs from './devs.json';
+import devs from './devs.json' assert { type: 'json' };
 
 env.config();
 
-// Instantiate octokit with a personal access token
-const octokit = new Octokit({ auth: process.env.MY_GITHUB_TOKEN });
+const getPRContents = async () => {
+    const octokit = new Octokit({ auth: process.env.MY_GITHUB_TOKEN });
+    const [owner, repo] = (process.env.GITHUB_REPOSITORY || '').split('/');
+    const pull_number = parseInt(process.env.PULL_REQUEST_NUMBER, 10);
 
-async function getPRFiles(owner, repo, pull_number) {
+    if (!owner || !repo || isNaN(pull_number)) {
+        console.error('Missing or invalid environment variables!');
+        process.exit(1);
+    }
     try {
         //get the diff of the pull request
         const pullrequest = await octokit.pulls.get({
@@ -21,41 +26,54 @@ async function getPRFiles(owner, repo, pull_number) {
             repo,
             pull_number,
         });
-
         //check if devs.json is modified with addtion
         const devsFile = files.find(file => file.filename === 'devs.json');
-        if (devsFile && devsFile.additions > 0) {
 
-            const newProjects = devsFile.patch.split('\n')
-                .filter(line => line.startsWith('+'))
-                .map(line => line.split(''))
-                .map(line => line.filter(char => char !== '+' && char !== ' ' && char !== '"' && char !== ','))
-                .map(line => line.join(''))
-                .map(line => line.split(':'))
-                .filter(line => line[0] === 'URL')
-                .map(line => line[1]);
-            
-            console.log('New projects added in this pull request: ', newProjects);
-            const developerProjects = devs.projects.find(({url}) => newProjects.includes(url));
-            console.log('Developer projects: ', developerProjects);
-            
+        const newProjects = devsFile?.patch.split('\n')
+            // remove all spaces
+            .map(line => line.replace(/\s/g, ''))
+            .reduce((acc, line) => {
+                if (line.startsWith('+')) {
+                    acc.push({
+                        type: "addition",
+                        contents: line.slice(1)
+                    });
+                }
+                if (line.startsWith('-')) {
+                    acc.push({
+                        type: "deletion",
+                        contents: line.slice(1)
+                    });
+                }
+                return acc;
+            }, [])
+            .filter((line, index, arr) =>
+                line.type === "addition" &&
+                !arr.find(l => l.type === "deletion" && l.contents === line.contents))
+            .map(line => line.contents)
+            .map(line => line.split('":"'))
+            // remove all quotes and commas
+            .map(line => line.map(item => item.replace(/"|,|{|}/g, '')))
+            // for now we care about the URL only
+            .filter(line => line[0] === 'URL')
+            .map(line => line[1]);
 
-        } else {
-            console.log('devs.json was not modified with additions');
+
+        // assuming the URL is unique for each developer
+        // find the entire developer object from devs.json using the URL
+        const newDevs = devs.filter(dev => dev.projects.some(project => newProjects?.includes(project.URL)));
+        return {
+            dev: newDevs,
+            pullRequest: pullrequest.data.url,
+            numberOFProjects: newProjects?.length || 0,
         }
+
     }
     catch (error) {
         console.error('Error getting pull request files: ', error);
     }
 }
 
-// Assumes you have GITHUB_REPOSITORY and GITHUB_TOKEN set in your environment variables
-const [owner, repo] = (process.env.GITHUB_REPOSITORY || '').split('/');
-const pullNumber = parseInt(process.env.PULL_REQUEST_NUMBER, 10);
 
-if (!owner || !repo || isNaN(pullNumber)) {
-    console.error('Missing or invalid environment variables!');
-    process.exit(1);
-}
 
-getPRFiles(owner, repo, pullNumber);
+export default getPRContents;
