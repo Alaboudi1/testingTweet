@@ -2,19 +2,17 @@ import OAuth from 'oauth-1.0a';
 import { createHmac } from 'crypto';
 import * as env from 'dotenv';
 import getPRContents from './pullRequestDiff.mjs';
-import { get } from 'http';
+import tweet from './tweet.json' assert { type: 'json' };
 env.config();
 
 
 
 const getTweetText = async () => {
     const prContents = await getPRContents();
-    const tweetText = 
-    `
-    تم إضافة ${prContents.numberOFProjects} مشاريع جديدة 🇸🇦
-    أطلع عليها الآن على موقعنا الإلكتروني
-    `;
-
+    const tweetText = tweet.text
+        .replace('اسم_المبرمج', prContents.dev.flatMap(dev => dev.name).join(' و '))
+        .replace('عدد_المشاريع', prContents.numberOFProjects)
+        + 'https://saudiopensourcecommunity.github.io/SaudiOSS/#' + prContents.dev.flatMap(dev => dev.name).join('+');
     return tweetText;
 }
 
