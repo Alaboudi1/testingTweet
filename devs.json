@@ -12,6 +12,16 @@
           "license": "MIT",
           "topics": ["Debugger", "web", "tools"]
         }
+      },
+       {
+        "name": "Hypothesizer-Debugger",
+        "URL": "https://github.com/Alaboudi1/Hypothesizer-Debugger",
+        "description": "Hypothesizer is an interactive debugger for web applications that allows developers to recreate bugs they are experiencing and get helpful feedback.",
+        "details": {
+          "language": "Typescript",
+          "license": "MIT",
+          "topics": ["Debugger", "web", "tools"]
+        }
       }
     ]
   },
