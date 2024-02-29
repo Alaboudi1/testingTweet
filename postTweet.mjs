@@ -9,10 +9,11 @@ env.config();
 
 const getTweetText = async () => {
     const prContents = await getPRContents();
+    const devsNames = prContents.dev.flatMap(dev => dev.githubURL.split('/').pop());
     const tweetText = tweet.text
         .replace('اسم_المبرمج', prContents.dev.flatMap(dev => dev.name).join(' و '))
         .replace('عدد_المشاريع', prContents.numberOFProjects)
-        + 'https://saudiopensourcecommunity.github.io/SaudiOSS/?search=' + prContents.dev.flatMap(dev => dev.name).join('+')+ '#developers';
+        + `https://saudiopensourcecommunity.github.io/SaudiOSS/?search=${devsNames.join(',')}#developers`;
     return tweetText;
 }
 
