@@ -9,6 +9,7 @@ env.config();
 
 const getTweetText = async () => {
     const prContents = await getPRContents();
+    if (prContents.numberOFProjects == 0) return "";
     const devsNames = prContents.dev.flatMap(dev => dev.githubURL.split('/').pop());
     const tweetText = tweet.text
         .replace('اسم_المبرمج', prContents.dev.flatMap(dev => dev.name).join(' و '))
