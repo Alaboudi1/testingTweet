@@ -12,7 +12,7 @@ const getTweetText = async () => {
     const tweetText = tweet.text
         .replace('اسم_المبرمج', prContents.dev.flatMap(dev => dev.name).join(' و '))
         .replace('عدد_المشاريع', prContents.numberOFProjects)
-        + 'https://saudiopensourcecommunity.github.io/SaudiOSS/#' + prContents.dev.flatMap(dev => dev.name).join('+');
+        + 'https://saudiopensourcecommunity.github.io/SaudiOSS/?search=' + prContents.dev.flatMap(dev => dev.name).join('+')+ '#developers';
     return tweetText;
 }
 
